@@ -14,6 +14,12 @@ Spring Boot, Kotlin, MySQL 기반의 간단한 쇼핑몰 API 프로젝트입니�
 ./gradlew bootRun
 ```
 
+SQL 로그까지 보고 싶으면 local profile로 실행합니다.
+
+```bash
+SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
+```
+
 기본 DB 설정은 환경 변수로 바꿀 수 있습니다.
 
 ```bash
@@ -63,5 +69,6 @@ curl http://localhost:8080/api/orders/1
 
 - 주문 생성 시 상품 row에 pessimistic lock을 걸고 재고를 차감합니다.
   - lock 방법은 트래픽에 따라 고려 대상이 될 수도 있음.
+- JPA Auditing을 켜두어서 엔티티에 `createdAt`, `updatedAt`이 자동 기록됩니다.
 - 결제, 쿠폰, 배송, Redis, Kafka 같은 미들웨어성 기능은 아직 넣지 않았습니다.
 - 초기 개발 편의를 위해 `spring.jpa.hibernate.ddl-auto=update`를 사용합니다.

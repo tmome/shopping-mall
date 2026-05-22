@@ -66,7 +66,7 @@ fun PurchaseOrder.toResponse(): OrderResponse =
 		buyerName = buyerName,
 		status = status,
 		totalAmount = totalAmount(),
-		createdAt = createdAt,
+		createdAt = requireNotNull(createdAt),
 		items = items.map { it.toResponse() },
 	)
 

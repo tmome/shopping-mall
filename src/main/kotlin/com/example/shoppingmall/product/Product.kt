@@ -1,5 +1,6 @@
 package com.example.shoppingmall.product
 
+import com.example.shoppingmall.common.BaseEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -23,7 +24,7 @@ class Product(
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null,
-) {
+) : BaseEntity() {
 	fun decreaseStock(quantity: Int) {
 		require(quantity > 0) { "Quantity must be greater than zero." }
 		require(stockQuantity >= quantity) { "Not enough stock." }

@@ -1,5 +1,6 @@
 package com.example.shoppingmall.order
 
+import com.example.shoppingmall.common.BaseEntity
 import com.example.shoppingmall.product.Product
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -15,7 +16,6 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.math.BigDecimal
-import java.time.Instant
 
 @Entity
 @Table(name = "purchase_orders")
@@ -27,13 +27,10 @@ class PurchaseOrder(
 	@Column(nullable = false, length = 20)
 	var status: OrderStatus = OrderStatus.CREATED,
 
-	@Column(nullable = false)
-	val createdAt: Instant = Instant.now(),
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null,
-) {
+) : BaseEntity() {
 	@OneToMany(mappedBy = "order", cascade = [CascadeType.ALL], orphanRemoval = true)
 	val items: MutableList<OrderItem> = mutableListOf()
 
@@ -74,6 +71,6 @@ class OrderItem(
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null,
-) {
+) : BaseEntity() {
 	fun lineAmount(): BigDecimal = unitPrice * quantity.toBigDecimal()
 }
