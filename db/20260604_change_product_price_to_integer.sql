@@ -1,0 +1,5 @@
+ALTER TABLE products
+  MODIFY COLUMN price BIGINT NOT NULL;
+
+ALTER TABLE order_items
+  MODIFY COLUMN unit_price BIGINT NOT NULL;

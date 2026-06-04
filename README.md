@@ -10,17 +10,25 @@ Spring Boot, Kotlin, MySQL 기반의 간단한 쇼핑몰 API 프로젝트입니�
 
 ## Run
 
+로컬 MySQL은 Docker Compose로 별도 컨테이너를 띄웁니다.
+
 ```bash
-./gradlew bootRun
+docker compose up -d mysql
 ```
 
-SQL 로그까지 보고 싶으면 local profile로 실행합니다.
+`shopping-mall-mysql`은 호스트의 `3307` 포트에 연결됩니다. 기존 로컬 MySQL이나 다른 프로젝트의 MySQL이 `3306`을 써도 충돌하지 않습니다.
 
 ```bash
 SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
 ```
 
-기본 DB 설정은 환경 변수로 바꿀 수 있습니다.
+브라우저에서 기본 상품 관리 화면을 열 수 있습니다.
+
+```bash
+open http://localhost:8080/
+```
+
+기본 DB 설정은 환경 변수로 바꿀 수 있습니다. 아래 예시는 로컬에 직접 떠 있는 MySQL을 쓸 때의 형태입니다.
 
 ```bash
 DB_URL='jdbc:mysql://localhost:3306/shopping_mall?serverTimezone=Asia/Seoul&characterEncoding=UTF-8' \

@@ -1,7 +1,6 @@
 package com.example.shoppingmall.product
 
 import jakarta.validation.Valid
-import jakarta.validation.constraints.DecimalMin
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 import org.springframework.http.HttpStatus
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.math.BigDecimal
 
 @RestController
 @RequestMapping("/api/products")
@@ -45,8 +43,8 @@ data class CreateProductRequest(
 	@field:NotBlank
 	val name: String,
 
-	@field:DecimalMin("0.00", inclusive = false)
-	val price: BigDecimal,
+	@field:Min(1)
+	val price: Long,
 
 	@field:Min(0)
 	val stockQuantity: Int,
@@ -55,7 +53,7 @@ data class CreateProductRequest(
 data class ProductResponse(
 	val id: Long,
 	val name: String,
-	val price: BigDecimal,
+	val price: Long,
 	val stockQuantity: Int,
 )
 

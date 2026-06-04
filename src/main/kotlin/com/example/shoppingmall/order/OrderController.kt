@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import java.math.BigDecimal
 import java.time.Instant
 
 @RestController
@@ -47,7 +46,7 @@ data class OrderResponse(
 	val id: Long,
 	val buyerName: String,
 	val status: OrderStatus,
-	val totalAmount: BigDecimal,
+	val totalAmount: Long,
 	val createdAt: Instant,
 	val items: List<OrderItemResponse>,
 )
@@ -55,9 +54,9 @@ data class OrderResponse(
 data class OrderItemResponse(
 	val productId: Long,
 	val productName: String,
-	val unitPrice: BigDecimal,
+	val unitPrice: Long,
 	val quantity: Int,
-	val lineAmount: BigDecimal,
+	val lineAmount: Long,
 )
 
 fun PurchaseOrder.toResponse(): OrderResponse =

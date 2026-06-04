@@ -15,7 +15,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
-import java.math.BigDecimal
 
 @Entity
 @Table(name = "purchase_orders")
@@ -44,8 +43,8 @@ class PurchaseOrder(
 		)
 	}
 
-	fun totalAmount(): BigDecimal =
-		items.fold(BigDecimal.ZERO) { total, item -> total + item.lineAmount() }
+	fun totalAmount(): Long =
+		items.sumOf { it.lineAmount() }
 }
 
 @Entity
@@ -62,8 +61,8 @@ class OrderItem(
 	@Column(nullable = false, length = 120)
 	val productName: String,
 
-	@Column(nullable = false, precision = 12, scale = 2)
-	val unitPrice: BigDecimal,
+	@Column(nullable = false)
+	val unitPrice: Long,
 
 	@Column(nullable = false)
 	val quantity: Int,
@@ -72,5 +71,5 @@ class OrderItem(
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null,
 ) : BaseEntity() {
-	fun lineAmount(): BigDecimal = unitPrice * quantity.toBigDecimal()
+	fun lineAmount(): Long = unitPrice * quantity
 }
