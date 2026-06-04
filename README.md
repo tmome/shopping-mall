@@ -1,22 +1,33 @@
 # Shopping Mall API
 
-Spring Boot, Kotlin, MySQL 기반의 간단한 쇼핑몰 API 프로젝트입니다.
+Spring Boot, Kotlin, MySQL, Kafka 기반의 간단한 쇼핑몰 API 프로젝트입니다.
 
 ## Requirements
 
 - JDK 21
-- MySQL 8.x
+- Docker
 - IntelliJ IDEA
 
 ## Run
 
-로컬 MySQL은 Docker Compose로 별도 컨테이너를 띄웁니다.
+로컬 인프라는 Docker Compose로 띄웁니다.
 
 ```bash
-docker compose up -d mysql
+docker compose up -d
 ```
 
-`shopping-mall-mysql`은 호스트의 `3307` 포트에 연결됩니다. 기존 로컬 MySQL이나 다른 프로젝트의 MySQL이 `3306`을 써도 충돌하지 않습니다.
+기본 포트는 아래와 같습니다.
+
+| Service | URL |
+| --- | --- |
+| App | http://localhost:8080 |
+| Swagger UI | http://localhost:8080/swagger-ui.html |
+| OpenAPI JSON | http://localhost:8080/v3/api-docs |
+| MySQL | localhost:3306 |
+| Kafka | localhost:9092 |
+| Kafka UI | http://localhost:8081 |
+
+MySQL 계정은 `shopping / root`이고 DB 이름은 `shopping_mall`입니다.
 
 ```bash
 SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
@@ -37,10 +48,10 @@ DB_PASSWORD=your-password \
 ./gradlew bootRun
 ```
 
-로컬 MySQL에는 먼저 DB를 만들어두면 됩니다.
+Kafka bootstrap server도 환경 변수로 바꿀 수 있습니다.
 
-```sql
-CREATE DATABASE shopping_mall DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```bash
+KAFKA_BOOTSTRAP_SERVERS=localhost:9092 SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
 ```
 
 ## API
@@ -78,5 +89,6 @@ curl http://localhost:8080/api/orders/1
 - 주문 생성 시 상품 row에 pessimistic lock을 걸고 재고를 차감합니다.
   - lock 방법은 트래픽에 따라 고려 대상이 될 수도 있음.
 - JPA Auditing을 켜두어서 엔티티에 `createdAt`, `updatedAt`이 자동 기록됩니다.
-- 결제, 쿠폰, 배송, Redis, Kafka 같은 미들웨어성 기능은 아직 넣지 않았습니다.
+- 결제, 쿠폰, 배송, Redis 같은 기능은 아직 넣지 않았습니다.
 - 초기 개발 편의를 위해 `spring.jpa.hibernate.ddl-auto=update`를 사용합니다.
+- API 문서는 springdoc-openapi로 자동 생성합니다.
