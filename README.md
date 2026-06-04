@@ -1,4 +1,4 @@
-# Shopping Mall API
+# 하고 싶은대로 마음대로 해보는 쇼핑몰 API
 
 Spring Boot, Kotlin, MySQL, Kafka 기반의 간단한 쇼핑몰 API 프로젝트입니다.
 

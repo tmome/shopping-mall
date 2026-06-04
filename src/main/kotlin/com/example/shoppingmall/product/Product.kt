@@ -1,6 +1,8 @@
 package com.example.shoppingmall.product
 
 import com.example.shoppingmall.common.BaseEntity
+import com.example.shoppingmall.common.ApiException
+import com.example.shoppingmall.common.ErrorCode
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -25,8 +27,12 @@ class Product(
 	val id: Long? = null,
 ) : BaseEntity() {
 	fun decreaseStock(quantity: Int) {
-		require(quantity > 0) { "Quantity must be greater than zero." }
-		require(stockQuantity >= quantity) { "Not enough stock." }
+		if (quantity <= 0) {
+			throw ApiException(ErrorCode.INVALID_QUANTITY)
+		}
+		if (stockQuantity < quantity) {
+			throw ApiException(ErrorCode.NOT_ENOUGH_STOCK)
+		}
 		stockQuantity -= quantity
 	}
 }

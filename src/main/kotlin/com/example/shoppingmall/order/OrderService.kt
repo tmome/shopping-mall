@@ -1,5 +1,7 @@
 package com.example.shoppingmall.order
 
+import com.example.shoppingmall.common.ApiException
+import com.example.shoppingmall.common.ErrorCode
 import com.example.shoppingmall.product.ProductRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -11,12 +13,14 @@ class OrderService(
 ) {
 	@Transactional
 	fun createOrder(request: CreateOrderRequest): OrderResponse {
-		require(request.items.isNotEmpty()) { "Order must contain at least one item." }
+		if (request.items.isEmpty()) {
+			throw ApiException(ErrorCode.INVALID_ORDER_ITEM)
+		}
 
 		val order = PurchaseOrder(buyerName = request.buyerName)
 		request.items.forEach { item ->
 			val product = productRepository.findByIdForUpdate(item.productId)
-				?: throw NoSuchElementException("Product not found: ${item.productId}")
+				?: throw ApiException(ErrorCode.PRODUCT_NOT_FOUND)
 
 			product.decreaseStock(item.quantity)
 			order.addItem(product, item.quantity)
@@ -28,6 +32,6 @@ class OrderService(
 	@Transactional(readOnly = true)
 	fun getOrder(id: Long): OrderResponse =
 		(purchaseOrderRepository.findWithItemsById(id)
-			?: throw NoSuchElementException("Order not found: $id"))
+			?: throw ApiException(ErrorCode.ORDER_NOT_FOUND))
 			.toResponse()
 }

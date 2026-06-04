@@ -1,5 +1,7 @@
 package com.example.shoppingmall.product
 
+import com.example.shoppingmall.common.ApiException
+import com.example.shoppingmall.common.ErrorCode
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
@@ -24,7 +26,7 @@ class ProductController(
 	@GetMapping("/{id}")
 	fun get(@PathVariable id: Long): ProductResponse =
 		productRepository.findById(id)
-			.orElseThrow { NoSuchElementException("Product not found: $id") }
+			.orElseThrow { ApiException(ErrorCode.PRODUCT_NOT_FOUND) }
 			.toResponse()
 
 	@PostMapping
