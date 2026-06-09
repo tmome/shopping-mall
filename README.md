@@ -54,6 +54,60 @@ Kafka bootstrap server도 환경 변수로 바꿀 수 있습니다.
 KAFKA_BOOTSTRAP_SERVERS=localhost:9092 SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
 ```
 
+### Kakao/Naver login
+
+로컬에서는 OAuth 키를 환경 변수로 넣습니다. Kakao는 Developers 콘솔의 REST API 키를 `KAKAO_CLIENT_ID`로 넣습니다.
+
+```bash
+KAKAO_CLIENT_ID='kakao-rest-api-key' \
+KAKAO_CLIENT_SECRET='kakao-client-secret-if-enabled' \
+NAVER_CLIENT_ID='naver-client-id' \
+NAVER_CLIENT_SECRET='naver-client-secret' \
+SPRING_PROFILES_ACTIVE=local \
+./gradlew bootRun
+```
+
+Kakao/Naver 콘솔에 등록할 Redirect URI는 아래와 같습니다.
+
+```text
+http://localhost:8080/login/oauth2/code/kakao
+http://localhost:8080/login/oauth2/code/naver
+```
+
+### AWS Secrets Manager
+
+AWS 배포 환경에서는 `aws` 프로필을 켜면 Secrets Manager에서 Spring 설정을 읽습니다. 기본 Secret 이름은 `/shopping-mall/aws`입니다.
+
+```bash
+SPRING_PROFILES_ACTIVE=aws \
+AWS_REGION=ap-northeast-2 \
+./gradlew bootRun
+```
+
+Secret 이름을 바꾸려면 `AWS_SECRETS_MANAGER_IMPORT`를 지정합니다.
+
+```bash
+AWS_SECRETS_MANAGER_IMPORT='aws-secretsmanager:/shopping-mall/prod' \
+SPRING_PROFILES_ACTIVE=aws \
+./gradlew bootRun
+```
+
+Secret value는 JSON으로 만들고, Spring property 이름을 그대로 key로 둡니다.
+
+```json
+{
+  "spring.datasource.url": "jdbc:mysql://host:3306/shopping_mall?serverTimezone=Asia/Seoul&characterEncoding=UTF-8",
+  "spring.datasource.username": "shopping",
+  "spring.datasource.password": "change-me",
+  "spring.security.oauth2.client.registration.kakao.client-id": "kakao-rest-api-key",
+  "spring.security.oauth2.client.registration.kakao.client-secret": "kakao-client-secret-if-enabled",
+  "spring.security.oauth2.client.registration.naver.client-id": "naver-client-id",
+  "spring.security.oauth2.client.registration.naver.client-secret": "naver-client-secret"
+}
+```
+
+애플리케이션 실행 역할에는 최소 `secretsmanager:GetSecretValue` 권한이 필요합니다. 고객 관리형 KMS 키로 Secret을 암호화했다면 `kms:Decrypt`도 필요합니다.
+
 ## API
 
 ### Create product
@@ -75,7 +129,7 @@ curl http://localhost:8080/api/products
 ```bash
 curl -X POST http://localhost:8080/api/orders \
   -H 'Content-Type: application/json' \
-  -d '{"buyerName":"Kim","items":[{"productId":1,"quantity":2}]}'
+  -d '{"items":[{"productId":1,"quantity":2}]}'
 ```
 
 ### Get order

@@ -1,9 +1,10 @@
 package com.example.shoppingmall.order
 
+import com.example.shoppingmall.auth.ShoppingMallPrincipal
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotBlank
 import org.springframework.http.HttpStatus
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,17 +21,21 @@ class OrderController(
 ) {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	fun create(@Valid @RequestBody request: CreateOrderRequest): OrderResponse =
-		orderService.createOrder(request)
+	fun create(
+		@AuthenticationPrincipal principal: ShoppingMallPrincipal,
+		@Valid @RequestBody request: CreateOrderRequest,
+	): OrderResponse =
+		orderService.createOrder(principal.memberId, request)
 
 	@GetMapping("/{id}")
-	fun get(@PathVariable id: Long): OrderResponse =
-		orderService.getOrder(id)
+	fun get(
+		@AuthenticationPrincipal principal: ShoppingMallPrincipal,
+		@PathVariable id: Long,
+	): OrderResponse =
+		orderService.getOrder(principal.memberId, id)
 }
 
 data class CreateOrderRequest(
-	@field:NotBlank
-	val buyerName: String,
 	@field:Valid
 	val items: List<CreateOrderItemRequest>,
 )

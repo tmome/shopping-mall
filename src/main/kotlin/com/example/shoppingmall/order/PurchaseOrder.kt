@@ -1,6 +1,7 @@
 package com.example.shoppingmall.order
 
 import com.example.shoppingmall.common.BaseEntity
+import com.example.shoppingmall.member.Member
 import com.example.shoppingmall.product.Product
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -21,6 +22,10 @@ import jakarta.persistence.Table
 class PurchaseOrder(
 	@Column(nullable = false, length = 120)
 	val buyerName: String,
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "member_id", nullable = false)
+	val member: Member,
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 20)
