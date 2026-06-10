@@ -1,8 +1,8 @@
-package com.example.shoppingmall.order
+package com.example.shoppingmall.order.domain
 
 import com.example.shoppingmall.common.BaseEntity
-import com.example.shoppingmall.member.Member
-import com.example.shoppingmall.product.Product
+import com.example.shoppingmall.member.domain.Member
+import com.example.shoppingmall.product.domain.Product
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -48,8 +48,9 @@ class PurchaseOrder(
 		)
 	}
 
-	fun totalAmount(): Long =
-		items.sumOf { it.lineAmount() }
+	fun totalAmount(): Long {
+		return items.sumOf { it.lineAmount() }
+	}
 }
 
 @Entity
@@ -76,5 +77,7 @@ class OrderItem(
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	val id: Long? = null,
 ) : BaseEntity() {
-	fun lineAmount(): Long = unitPrice * quantity
+	fun lineAmount(): Long {
+		return unitPrice * quantity
+	}
 }

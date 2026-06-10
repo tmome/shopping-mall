@@ -1,7 +1,7 @@
-package com.example.shoppingmall.product
+package com.example.shoppingmall.product.domain
 
-import com.example.shoppingmall.common.BaseEntity
 import com.example.shoppingmall.common.ApiException
+import com.example.shoppingmall.common.BaseEntity
 import com.example.shoppingmall.common.ErrorCode
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

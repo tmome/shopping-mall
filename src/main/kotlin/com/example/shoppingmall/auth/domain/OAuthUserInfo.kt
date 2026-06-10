@@ -1,6 +1,6 @@
-package com.example.shoppingmall.auth
+package com.example.shoppingmall.auth.domain
 
-import com.example.shoppingmall.member.OAuthProvider
+import com.example.shoppingmall.member.domain.OAuthProvider
 
 data class OAuthUserInfo(
 	val provider: OAuthProvider,
@@ -10,12 +10,13 @@ data class OAuthUserInfo(
 )
 
 object OAuthUserInfoFactory {
-	fun from(registrationId: String, attributes: Map<String, Any>): OAuthUserInfo =
-		when (registrationId.lowercase()) {
+	fun from(registrationId: String, attributes: Map<String, Any>): OAuthUserInfo {
+		return when (registrationId.lowercase()) {
 			"kakao" -> kakao(attributes)
 			"naver" -> naver(attributes)
 			else -> throw IllegalArgumentException("Unsupported OAuth provider: $registrationId")
 		}
+	}
 
 	@Suppress("UNCHECKED_CAST")
 	private fun kakao(attributes: Map<String, Any>): OAuthUserInfo {

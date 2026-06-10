@@ -1,5 +1,6 @@
-package com.example.shoppingmall.auth
+package com.example.shoppingmall.auth.config
 
+import com.example.shoppingmall.auth.service.CustomOAuth2UserService
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,8 +16,8 @@ class SecurityConfig(
 	private val customOAuth2UserService: CustomOAuth2UserService,
 ) {
 	@Bean
-	fun securityFilterChain(http: HttpSecurity): SecurityFilterChain =
-		http
+	fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+		return http
 			.csrf { it.disable() }
 			.sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) }
 			.authorizeHttpRequests {
@@ -44,4 +45,5 @@ class SecurityConfig(
 				}
 			}
 			.build()
+	}
 }

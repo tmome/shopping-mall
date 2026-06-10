@@ -1,7 +1,9 @@
-package com.example.shoppingmall.auth
+package com.example.shoppingmall.auth.service
 
-import com.example.shoppingmall.member.Member
-import com.example.shoppingmall.member.MemberRepository
+import com.example.shoppingmall.auth.domain.OAuthUserInfoFactory
+import com.example.shoppingmall.auth.domain.ShoppingMallPrincipal
+import com.example.shoppingmall.member.domain.Member
+import com.example.shoppingmall.member.repository.MemberRepository
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService

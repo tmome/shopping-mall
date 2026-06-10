@@ -1,6 +1,6 @@
-package com.example.shoppingmall.auth
+package com.example.shoppingmall.auth.domain
 
-import com.example.shoppingmall.member.Member
+import com.example.shoppingmall.member.domain.Member
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.core.user.OAuth2User
@@ -13,18 +13,21 @@ class ShoppingMallPrincipal(
 	private val delegateAttributes: Map<String, Any>,
 	private val nameAttributeKey: String,
 ) : OAuth2User {
-	override fun getName(): String =
-		memberId.toString()
+	override fun getName(): String {
+		return memberId.toString()
+	}
 
-	override fun getAttributes(): Map<String, Any> =
-		delegateAttributes
+	override fun getAttributes(): Map<String, Any> {
+		return delegateAttributes
+	}
 
-	override fun getAuthorities(): Collection<GrantedAuthority> =
-		listOf(SimpleGrantedAuthority("ROLE_$role"))
+	override fun getAuthorities(): Collection<GrantedAuthority> {
+		return listOf(SimpleGrantedAuthority("ROLE_$role"))
+	}
 
 	companion object {
-		fun from(member: Member, attributes: Map<String, Any>, nameAttributeKey: String): ShoppingMallPrincipal =
-			ShoppingMallPrincipal(
+		fun from(member: Member, attributes: Map<String, Any>, nameAttributeKey: String): ShoppingMallPrincipal {
+			return ShoppingMallPrincipal(
 				memberId = requireNotNull(member.id),
 				email = member.email,
 				displayName = member.name,
@@ -32,5 +35,6 @@ class ShoppingMallPrincipal(
 				delegateAttributes = attributes,
 				nameAttributeKey = nameAttributeKey,
 			)
+		}
 	}
 }

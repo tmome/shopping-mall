@@ -1,4 +1,4 @@
-package com.example.shoppingmall.member
+package com.example.shoppingmall.member.domain
 
 import com.example.shoppingmall.common.BaseEntity
 import jakarta.persistence.Column

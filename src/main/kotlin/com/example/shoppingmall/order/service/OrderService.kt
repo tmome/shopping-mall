@@ -1,9 +1,11 @@
-package com.example.shoppingmall.order
+package com.example.shoppingmall.order.service
 
 import com.example.shoppingmall.common.ApiException
 import com.example.shoppingmall.common.ErrorCode
-import com.example.shoppingmall.member.MemberRepository
-import com.example.shoppingmall.product.ProductRepository
+import com.example.shoppingmall.member.repository.MemberRepository
+import com.example.shoppingmall.order.domain.PurchaseOrder
+import com.example.shoppingmall.order.repository.PurchaseOrderRepository
+import com.example.shoppingmall.product.repository.ProductRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,8 +16,8 @@ class OrderService(
 	private val purchaseOrderRepository: PurchaseOrderRepository,
 ) {
 	@Transactional
-	fun createOrder(memberId: Long, request: CreateOrderRequest): OrderResponse {
-		if (request.items.isEmpty()) {
+	fun createOrder(memberId: Long, command: CreateOrderCommand): OrderResult {
+		if (command.items.isEmpty()) {
 			throw ApiException(ErrorCode.INVALID_ORDER_ITEM)
 		}
 
@@ -25,7 +27,7 @@ class OrderService(
 			buyerName = member.name,
 			member = member,
 		)
-		request.items.forEach { item ->
+		command.items.forEach { item ->
 			val product = productRepository.findByIdForUpdate(item.productId)
 				?: throw ApiException(ErrorCode.PRODUCT_NOT_FOUND)
 
@@ -33,12 +35,13 @@ class OrderService(
 			order.addItem(product, item.quantity)
 		}
 
-		return purchaseOrderRepository.save(order).toResponse()
+		return purchaseOrderRepository.save(order).toResult()
 	}
 
 	@Transactional(readOnly = true)
-	fun getOrder(memberId: Long, id: Long): OrderResponse =
-		(purchaseOrderRepository.findWithItemsByIdAndMemberId(id, memberId)
+	fun getOrder(memberId: Long, id: Long): OrderResult {
+		return (purchaseOrderRepository.findWithItemsByIdAndMemberId(id, memberId)
 			?: throw ApiException(ErrorCode.ORDER_NOT_FOUND))
-			.toResponse()
+			.toResult()
+	}
 }

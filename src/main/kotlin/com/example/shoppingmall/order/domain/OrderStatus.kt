@@ -1,4 +1,4 @@
-package com.example.shoppingmall.order
+package com.example.shoppingmall.order.domain
 
 enum class OrderStatus {
 	CREATED,

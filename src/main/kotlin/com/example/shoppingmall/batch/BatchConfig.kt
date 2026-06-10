@@ -3,10 +3,10 @@ package com.example.shoppingmall.batch
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.core.configuration.annotation.EnableJdbcJobRepository
 import org.springframework.batch.core.launch.JobOperator
-import org.springframework.boot.batch.autoconfigure.BatchProperties
-import org.springframework.boot.batch.autoconfigure.JobLauncherApplicationRunner
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.batch.autoconfigure.BatchProperties
+import org.springframework.boot.batch.autoconfigure.JobLauncherApplicationRunner
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -30,7 +30,7 @@ class BatchConfig {
 	): JobLauncherApplicationRunner {
 		val runner = JobLauncherApplicationRunner(jobOperator)
 		val jobName = properties.job.name
-		if (!jobName.isNullOrBlank()) {
+		if (jobName.isNotBlank()) {
 			runner.setJobName(jobName)
 		}
 		return runner
