@@ -1,4 +1,4 @@
-package com.example.shoppingmall.product.service
+package com.example.shoppingmall.product.service.model
 
 import com.example.shoppingmall.product.domain.Product
 

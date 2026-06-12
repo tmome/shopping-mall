@@ -1,10 +1,10 @@
 package com.example.shoppingmall.order.dto
 
 import com.example.shoppingmall.order.domain.OrderStatus
-import com.example.shoppingmall.order.service.CreateOrderCommand
-import com.example.shoppingmall.order.service.CreateOrderItemCommand
-import com.example.shoppingmall.order.service.OrderItemResult
-import com.example.shoppingmall.order.service.OrderResult
+import com.example.shoppingmall.order.service.model.CreateOrderCommand
+import com.example.shoppingmall.order.service.model.CreateOrderItemCommand
+import com.example.shoppingmall.order.service.model.OrderItemResult
+import com.example.shoppingmall.order.service.model.OrderResult
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
 import java.time.Instant

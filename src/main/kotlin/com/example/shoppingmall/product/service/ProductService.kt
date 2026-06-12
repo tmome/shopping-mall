@@ -2,8 +2,15 @@ package com.example.shoppingmall.product.service
 
 import com.example.shoppingmall.common.ApiException
 import com.example.shoppingmall.common.ErrorCode
+import com.example.shoppingmall.common.pagination.PageRequestFactory
 import com.example.shoppingmall.product.domain.Product
 import com.example.shoppingmall.product.repository.ProductRepository
+import com.example.shoppingmall.product.service.model.CreateProductCommand
+import com.example.shoppingmall.product.service.model.ProductResult
+import com.example.shoppingmall.product.service.model.ProductSortOption
+import com.example.shoppingmall.product.service.model.toResult
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -12,8 +19,9 @@ class ProductService(
 	private val productRepository: ProductRepository,
 ) {
 	@Transactional(readOnly = true)
-	fun findAll(): List<ProductResult> {
-		return productRepository.findAll().map { it.toResult() }
+	fun findPage(pageable: Pageable, sortOption: ProductSortOption): Page<ProductResult> {
+		val pageRequest = PageRequestFactory.of(pageable, sortOption)
+		return productRepository.findAll(pageRequest).map { it.toResult() }
 	}
 
 	@Transactional(readOnly = true)

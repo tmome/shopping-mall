@@ -1,5 +1,6 @@
 plugins {
 	kotlin("jvm") version "2.2.21"
+	kotlin("kapt") version "2.2.21"
 	kotlin("plugin.spring") version "2.2.21"
 	id("org.springframework.boot") version "4.0.6"
 	id("io.spring.dependency-management") version "1.1.7"
@@ -37,6 +38,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3")
 	implementation("tools.jackson.module:jackson-module-kotlin")
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.security:spring-security-test")

@@ -11,4 +11,6 @@ interface ProductRepository : JpaRepository<Product, Long> {
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	@Query("select p from Product p where p.id = :id")
 	fun findByIdForUpdate(@Param("id") id: Long): Product?
+
+	fun existsByName(name: String): Boolean
 }

@@ -1,4 +1,4 @@
-package com.example.shoppingmall.order.service
+package com.example.shoppingmall.order.service.model
 
 import com.example.shoppingmall.order.domain.OrderItem
 import com.example.shoppingmall.order.domain.OrderStatus

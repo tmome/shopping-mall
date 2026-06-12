@@ -1,5 +1,7 @@
 # Coding Conventions
 
+Prefer conventions from `/Users/hyunseung2/Desktop/repository/fitpetmall-backend-v4-main` when adding backend structure to this project. If a local choice conflicts with the mall project, mirror the mall project unless there is a clear reason not to.
+
 ## Package Structure
 
 Feature packages should be split by role.
@@ -10,6 +12,7 @@ Use this shape when adding or moving code:
 com.example.shoppingmall.<feature>.controller
 com.example.shoppingmall.<feature>.dto
 com.example.shoppingmall.<feature>.service
+com.example.shoppingmall.<feature>.service.model
 com.example.shoppingmall.<feature>.domain
 com.example.shoppingmall.<feature>.repository
 ```
@@ -21,7 +24,35 @@ Shared API infrastructure should also be split by role. For example:
 ```text
 com.example.shoppingmall.common.handler
 com.example.shoppingmall.common.dto
+com.example.shoppingmall.common.pagination
+com.example.shoppingmall.common.querydsl
 ```
+
+Paging responses should follow the mall project shape:
+
+```kotlin
+data class Pagination(
+    val totalCount: Long,
+    val totalPage: Int,
+    val count: Int,
+    val page: Int,
+    val perPage: Int,
+    val hasNextPage: Boolean,
+    val hasPreviousPage: Boolean,
+)
+```
+
+Use `Pagination.valueOf(page)` and wrap list responses as `PaginationImpl<T>(pagination, content)`.
+
+## QueryDSL
+
+Follow the mall project direction for QueryDSL.
+
+Do not add custom repository interfaces only to make QueryDSL available. Prefer constructor injection of `JPAQueryFactory` into the class that owns the query, then call QueryDSL directly.
+
+Use `BooleanExpression` helpers for dynamic conditions instead of `BooleanBuilder` when possible. If a condition method returns `null`, QueryDSL omits it from the `where` clause, which keeps query construction explicit.
+
+For simple list paging, use shared query helpers such as `pageAwareFetch(pageable)` instead of repeating `offset(...).limit(...)` everywhere.
 
 ## Controller Layer
 

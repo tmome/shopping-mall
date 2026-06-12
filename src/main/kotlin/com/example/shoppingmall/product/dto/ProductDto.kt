@@ -1,7 +1,7 @@
 package com.example.shoppingmall.product.dto
 
-import com.example.shoppingmall.product.service.CreateProductCommand
-import com.example.shoppingmall.product.service.ProductResult
+import com.example.shoppingmall.product.service.model.CreateProductCommand
+import com.example.shoppingmall.product.service.model.ProductResult
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 

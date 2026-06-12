@@ -5,6 +5,9 @@ import com.example.shoppingmall.common.ErrorCode
 import com.example.shoppingmall.member.repository.MemberRepository
 import com.example.shoppingmall.order.domain.PurchaseOrder
 import com.example.shoppingmall.order.repository.PurchaseOrderRepository
+import com.example.shoppingmall.order.service.model.CreateOrderCommand
+import com.example.shoppingmall.order.service.model.OrderResult
+import com.example.shoppingmall.order.service.model.toResult
 import com.example.shoppingmall.product.repository.ProductRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
