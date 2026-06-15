@@ -4,8 +4,6 @@ spring:
     username: ${DB_USERNAME:shopping}
     password: ${DB_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   batch:
     job:
       enabled: false

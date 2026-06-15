@@ -2,6 +2,7 @@ package com.example.shoppingmall.order.controller
 
 import com.example.shoppingmall.auth.domain.ShoppingMallPrincipal
 import com.example.shoppingmall.order.dto.CreateOrderRequest
+import com.example.shoppingmall.order.dto.OrderRequestResponse
 import com.example.shoppingmall.order.dto.OrderResponse
 import com.example.shoppingmall.order.dto.toCommand
 import com.example.shoppingmall.order.dto.toResponse
@@ -29,6 +30,15 @@ class OrderController(
 		@Valid @RequestBody request: CreateOrderRequest,
 	): OrderResponse {
 		return orderService.createOrder(principal.memberId, request.toCommand()).toResponse()
+	}
+
+	@PostMapping("/requests")
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	fun request(
+		@AuthenticationPrincipal principal: ShoppingMallPrincipal,
+		@Valid @RequestBody request: CreateOrderRequest,
+	): OrderRequestResponse {
+		return orderService.requestOrder(principal.memberId, request.toCommand()).toResponse()
 	}
 
 	@GetMapping("/{id}")

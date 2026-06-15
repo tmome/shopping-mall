@@ -14,6 +14,11 @@ data class CreateOrderItemCommand(
 	val quantity: Int,
 )
 
+data class OrderRequestResult(
+	val requestId: String,
+	val status: String,
+)
+
 data class OrderResult(
 	val id: Long,
 	val buyerName: String,

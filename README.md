@@ -25,7 +25,7 @@ docker compose up -d
 | OpenAPI JSON | http://localhost:8080/v3/api-docs |
 | MySQL | localhost:3306 |
 | Kafka | localhost:9092 |
-| Kafka UI | http://localhost:8081 |
+| Kafka UI | http://localhost:18081 |
 
 MySQL 계정은 `shopping / root`이고 DB 이름은 `shopping_mall`입니다.
 
@@ -52,6 +52,15 @@ Kafka bootstrap server도 환경 변수로 바꿀 수 있습니다.
 
 ```bash
 KAFKA_BOOTSTRAP_SERVERS=localhost:9092 SPRING_PROFILES_ACTIVE=local ./gradlew bootRun
+```
+
+Kafka 기반 구매 요청은 `mall.purchase.commands.v1` 토픽으로 들어가고, 처리 결과는 `mall.purchase.events.v1` 토픽으로 발행합니다. 기본 설정은 구매 커맨드 토픽을 1개 파티션으로 만들어 구매 처리를 순차화하고, 실제 재고 정합성은 DB pessimistic lock으로 한 번 더 보장합니다.
+
+```bash
+PURCHASE_COMMAND_TOPIC=mall.purchase.commands.v1 \
+PURCHASE_EVENT_TOPIC=mall.purchase.events.v1 \
+SPRING_PROFILES_ACTIVE=local \
+./gradlew bootRun
 ```
 
 ### Kakao/Naver login
@@ -128,6 +137,14 @@ curl http://localhost:8080/api/products
 
 ```bash
 curl -X POST http://localhost:8080/api/orders \
+  -H 'Content-Type: application/json' \
+  -d '{"items":[{"productId":1,"quantity":2}]}'
+```
+
+### Request order through Kafka
+
+```bash
+curl -X POST http://localhost:8080/api/orders/requests \
   -H 'Content-Type: application/json' \
   -d '{"items":[{"productId":1,"quantity":2}]}'
 ```

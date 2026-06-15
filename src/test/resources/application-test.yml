@@ -16,3 +16,10 @@ spring:
       enabled: false
     jdbc:
       initialize-schema: always
+  kafka:
+    listener:
+      auto-startup: false
+
+app:
+  kafka:
+    topic-auto-create-enabled: false

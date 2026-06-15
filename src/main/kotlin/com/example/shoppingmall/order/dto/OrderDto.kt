@@ -4,6 +4,7 @@ import com.example.shoppingmall.order.domain.OrderStatus
 import com.example.shoppingmall.order.service.model.CreateOrderCommand
 import com.example.shoppingmall.order.service.model.CreateOrderItemCommand
 import com.example.shoppingmall.order.service.model.OrderItemResult
+import com.example.shoppingmall.order.service.model.OrderRequestResult
 import com.example.shoppingmall.order.service.model.OrderResult
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Min
@@ -38,6 +39,11 @@ data class OrderItemResponse(
 	val lineAmount: Long,
 )
 
+data class OrderRequestResponse(
+	val requestId: String,
+	val status: String,
+)
+
 fun CreateOrderRequest.toCommand(): CreateOrderCommand {
 	return CreateOrderCommand(
 		items = items.map { it.toCommand() },
@@ -69,5 +75,12 @@ fun OrderItemResult.toResponse(): OrderItemResponse {
 		unitPrice = unitPrice,
 		quantity = quantity,
 		lineAmount = lineAmount,
+	)
+}
+
+fun OrderRequestResult.toResponse(): OrderRequestResponse {
+	return OrderRequestResponse(
+		requestId = requestId,
+		status = status,
 	)
 }

@@ -24,6 +24,27 @@ spring:
       enabled: false
     jdbc:
       initialize-schema: ${BATCH_SCHEMA_INITIALIZE:never}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:shopping-mall-order-workers}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.example.shoppingmall.*
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.example.shoppingmall.order.event.OrderRequestedEvent
+    listener:
+      ack-mode: record
+      auto-startup: ${KAFKA_LISTENER_AUTO_STARTUP:true}
+      concurrency: ${KAFKA_ORDER_CONSUMER_CONCURRENCY:1}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      acks: all
+      properties:
+        spring.json.add.type.headers: false
   security:
     oauth2:
       client:
@@ -62,3 +83,9 @@ spring:
 
 server:
   port: ${SERVER_PORT:8080}
+
+app:
+  kafka:
+    topics:
+      purchase-command: ${PURCHASE_COMMAND_TOPIC:mall.purchase.commands.v1}
+      purchase-event: ${PURCHASE_EVENT_TOPIC:mall.purchase.events.v1}
