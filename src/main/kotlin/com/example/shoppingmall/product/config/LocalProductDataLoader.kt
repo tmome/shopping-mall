@@ -2,6 +2,7 @@ package com.example.shoppingmall.product.config
 
 import com.example.shoppingmall.product.domain.Product
 import com.example.shoppingmall.product.repository.ProductRepository
+import com.example.shoppingmall.product.search.ProductSearchService
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Profile
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Profile("local")
 class LocalProductDataLoader(
 	private val productRepository: ProductRepository,
+	private val productSearchService: ProductSearchService,
 ) : ApplicationRunner {
 	@Transactional
 	override fun run(args: ApplicationArguments) {
@@ -33,5 +35,7 @@ class LocalProductDataLoader(
 		products
 			.filterNot { productRepository.existsByName(it.name) }
 			.forEach { productRepository.save(it) }
+
+		productSearchService.indexAll(productRepository.findAll())
 	}
 }

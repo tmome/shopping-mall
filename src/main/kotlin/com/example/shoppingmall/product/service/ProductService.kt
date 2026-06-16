@@ -5,6 +5,7 @@ import com.example.shoppingmall.common.ErrorCode
 import com.example.shoppingmall.common.pagination.PageRequestFactory
 import com.example.shoppingmall.product.domain.Product
 import com.example.shoppingmall.product.repository.ProductRepository
+import com.example.shoppingmall.product.search.ProductSearchService
 import com.example.shoppingmall.product.service.model.CreateProductCommand
 import com.example.shoppingmall.product.service.model.ProductResult
 import com.example.shoppingmall.product.service.model.ProductSortOption
@@ -17,9 +18,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ProductService(
 	private val productRepository: ProductRepository,
+	private val productSearchService: ProductSearchService,
 ) {
 	@Transactional(readOnly = true)
-	fun findPage(pageable: Pageable, sortOption: ProductSortOption): Page<ProductResult> {
+	fun findPage(pageable: Pageable, sortOption: ProductSortOption, keyword: String?): Page<ProductResult> {
+		if (!keyword.isNullOrBlank()) {
+			return productSearchService.search(keyword, pageable, sortOption)
+		}
+
 		val pageRequest = PageRequestFactory.of(pageable, sortOption)
 		return productRepository.findAll(pageRequest).map { it.toResult() }
 	}
@@ -38,6 +44,8 @@ class ProductService(
 			price = command.price,
 			stockQuantity = command.stockQuantity,
 		)
-		return productRepository.save(product).toResult()
+		val savedProduct = productRepository.save(product)
+		productSearchService.index(savedProduct)
+		return savedProduct.toResult()
 	}
 }

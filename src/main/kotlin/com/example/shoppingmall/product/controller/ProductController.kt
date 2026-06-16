@@ -30,8 +30,9 @@ class ProductController(
 	fun list(
 		@PageableDefault(size = 6) pageable: Pageable,
 		@RequestParam(defaultValue = "latest") sort: String,
+		@RequestParam(required = false) keyword: String?,
 	): PaginationImpl<ProductResponse> {
-		return productService.findPage(pageable, ProductSortOption.from(sort)).toPaginationImpl { it.toResponse() }
+		return productService.findPage(pageable, ProductSortOption.from(sort), keyword).toPaginationImpl { it.toResponse() }
 	}
 
 	@GetMapping("/{id}")

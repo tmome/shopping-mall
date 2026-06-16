@@ -1,6 +1,9 @@
 const productForm = document.querySelector("#productForm");
 const productList = document.querySelector("#productList");
 const refreshButton = document.querySelector("#refreshButton");
+const searchForm = document.querySelector("#searchForm");
+const keywordInput = document.querySelector("#keywordInput");
+const clearSearchButton = document.querySelector("#clearSearchButton");
 const sortSelect = document.querySelector("#sortSelect");
 const pagination = document.querySelector("#pagination");
 const prevPageButton = document.querySelector("#prevPageButton");
@@ -97,6 +100,10 @@ async function loadProducts(page = currentPage) {
 			size: String(pageSize),
 			sort: sortSelect.value,
 		});
+		const keyword = keywordInput.value.trim();
+		if (keyword.length > 0) {
+			params.set("keyword", keyword);
+		}
 		const productPage = await request(`/api/products?${params.toString()}`);
 		currentPage = productPage.pagination.page - 1;
 		renderProducts(productPage.content);
@@ -168,6 +175,18 @@ productForm.addEventListener("submit", async (event) => {
 refreshButton.addEventListener("click", () => {
 	setMessage("");
 	loadProducts();
+});
+
+searchForm.addEventListener("submit", (event) => {
+	event.preventDefault();
+	setMessage("");
+	loadProducts(0);
+});
+
+clearSearchButton.addEventListener("click", () => {
+	keywordInput.value = "";
+	setMessage("");
+	loadProducts(0);
 });
 
 sortSelect.addEventListener("change", () => {

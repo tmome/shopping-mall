@@ -45,6 +45,8 @@ spring:
       acks: all
       properties:
         spring.json.add.type.headers: false
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
   security:
     oauth2:
       client:

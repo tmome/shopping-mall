@@ -58,6 +58,14 @@
 					<p>실시간 상품 데이터</p>
 				</div>
 				<div class="list-tools">
+					<form id="searchForm" class="search-form">
+						<label class="search-label" for="keywordInput">
+							<span>검색</span>
+							<input id="keywordInput" name="keyword" type="search" autocomplete="off" placeholder="상품명">
+						</label>
+						<button class="secondary" type="submit">검색</button>
+						<button class="secondary" id="clearSearchButton" type="button">초기화</button>
+					</form>
 					<label class="select-label" for="sortSelect">
 						<span>정렬</span>
 						<select id="sortSelect" name="sort">
