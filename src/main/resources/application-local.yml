@@ -17,6 +17,11 @@ spring:
       hibernate:
         highlight_sql: true
 
+app:
+  redis:
+    host: ${REDIS_CACHE_HOST:127.0.0.1}
+    port: ${REDIS_CACHE_PORT:16379}
+
 logging:
   level:
     org.hibernate.SQL: debug

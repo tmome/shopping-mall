@@ -78,7 +78,22 @@ services:
       timeout: 5s
       retries: 20
 
+  redis:
+    image: redis:7.0.12
+    container_name: shopping-mall-redis
+    ports:
+      - "16379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
 volumes:
   mysql-data:
   kafka-data:
   elasticsearch-data:
+  redis-data:
